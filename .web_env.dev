@@ -1,0 +1,10 @@
+SECRET_KEY=django-insecure-eyv$#@%72h!1j7*^!o6l7v$!t@zfghldpgcxgu12f+j+)@0-_0
+DEBUG=True
+ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+
+SQL_ENGINE=django.db.backends.postgresql_psycopg2
+SQL_DATABASE=quiz
+SQL_USER=postgres
+SQL_PASSWORD=postgres
+SQL_HOST=db
+SQL_PORT=5432
