@@ -25,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'ksdfnksdjbfuwgefuy4g3485y032845uop230329')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', default=True))
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split()
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 
 
 # Application definition
@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("POSTGRES_ENGINE"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "ENGINE": os.environ.get("POSTGRES_ENGINE", ''),
+        "HOST": os.environ.get("POSTGRES_HOST", ''),
+        "PORT": os.environ.get("POSTGRES_PORT", ''),
+        "NAME": os.environ.get("POSTGRES_DB", ''),
+        "USER": os.environ.get("POSTGRES_USER", ''),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ''),
     }
 }
 
@@ -166,5 +166,9 @@ CELERY_BEAT_SCHEDULE = {
     "send_email_report": {
         "task": "core.tasks.send_email_report",
         "schedule": crontab(minute="*/1"),
+    },
+    "send_welcome_email": {
+        "task": "core.tasks.send_welcome_email",
+        "schedule": crontab(hour="*/24"),
     },
 }
