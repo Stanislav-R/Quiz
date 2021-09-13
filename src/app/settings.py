@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
     'quiz.apps.QuizConfig',
+    'tasks.apps.TasksConfig',
 ]
 
 MIDDLEWARE = [
@@ -156,7 +157,7 @@ DEFAULT_FROM_EMAIL = "noreply@test.com"
 ADMINS = [("testuser", "test_admin@test.com"), ]
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://rabbitmq:5672")
-# CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
 
 CELERY_BEAT_SCHEDULE = {
     "sample_task": {
@@ -171,4 +172,15 @@ CELERY_BEAT_SCHEDULE = {
         "task": "core.tasks.send_welcome_email",
         "schedule": crontab(hour="*/24"),
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
 }

@@ -19,12 +19,20 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
+from tasks.views import get_status, home, run_task
+# from django.views.decorators.cache import cache_page
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('quizzes/', include('quiz.urls')),
+    path('home/', home, name='home'),
+    # path('home/', cache_page(60)(home), name='home'),
+    path("tasks/<task_id>/", get_status, name="get_status"),
+    path("tasks/", run_task, name="run_task"),
+
 ]
 
 if settings.DEBUG:

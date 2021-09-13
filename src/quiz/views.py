@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -73,11 +74,17 @@ class ExamQuestionView(LoginRequiredMixin, UpdateView):
         # order_number = kwargs.get('order_number')
         result = Result.objects.get(uuid=kwargs['result_uuid'])
 
-        question = Question.objects.get(
-            exam__uuid=uuid,
-            # order_num=order_number
-            order_num=result.current_order_number + 1
-        )
+        question = cache.get('question')
+        if not question:
+            question = Question.objects.get(
+                exam__uuid=uuid,
+                # order_num=order_number
+                order_num=result.current_order_number + 1
+            )
+            cache.set('question', question, 30)
+            print('Data from DB')
+        else:
+            print('Data from CACHE')
 
         choices = ChoicesFormSet(queryset=question.choices.all())
 
